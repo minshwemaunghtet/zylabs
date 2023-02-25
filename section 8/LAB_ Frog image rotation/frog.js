@@ -22,14 +22,23 @@ function drawFrog(canvas, x, y, direction = directions.UP) {
    switch (direction) {
       case directions.DOWN:
          // TODO: Translate, rotate, and translate
-         
+            context.translate(x + frogImg.width / 2, y + frogImg.height / 2);
+            context.rotate(180 * Math.PI/180);
+            context.translate(-x-frogImg.width/2,-y-frogImg.height/2);
          break;
+
       case directions.LEFT:
          // TODO: Translate, rotate, and translate
-                  
+            context.translate(x + frogImg.width / 2, y + frogImg.height / 2);
+            context.rotate(-90 * Math.PI/180);       
+            context.translate(-x-frogImg.width/2,-y-frogImg.height/2);
          break;
+         
       case directions.RIGHT:
          // TODO: Translate, rotate, and translate
+            context.translate(x + frogImg.width / 2, y + frogImg.height / 2);
+            context.rotate(90 * Math.PI/180);
+            context.translate(-x-frogImg.width/2,-y-frogImg.height/2);
          
          break;
    }
