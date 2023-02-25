@@ -14,12 +14,27 @@ window.addEventListener("DOMContentLoaded", function () {
 
 // TODO: Modify to use Fetch API
 function fetchQuotes(topic, count) {
-   
-   let html = "<ol>";
-   for (let c = 1; c <= count; c++) {
-      html += `<li>Quote ${c} - Anonymous</li>`;
-   }
-   html += "</ol>";
-
-   document.querySelector("#quotes").innerHTML = html;
-}
+   const url = `https://wp.zybooks.com/quotes.php?topic=${topic}&count=${count}`;
+ 
+   fetch(url)
+     .then(response => {
+      if (!response.ok) {
+         throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+   })
+     
+     .then(data => {
+      let html = "<ol>";
+      data.forEach(quote => {
+         html += `<li>${quote.quote} - ${quote.source}</li>`;
+      });
+      html += "</ol>";
+      document.querySelector("#quotes").innerHTML = html;
+   })
+     
+     .catch(error => {
+      console.error(error);
+      document.querySelector("#quotes").innerHTML = `Topic '${topic}' not found`;
+   });
+ }
