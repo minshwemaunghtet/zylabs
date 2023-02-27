@@ -7,7 +7,11 @@ $(function() {
    $("#addBtn").click(addBtnClick);
    
    // TODO: Add item if user presses Enter
-
+   $("#newItemText").keypress(function(event) {
+      if (event.key === "Enter") {
+         addBtnClick();
+      }
+   });
 });
 
 function addBtnClick() {
@@ -52,10 +56,24 @@ function addItem(item) {
 
 function moveItem(fromIndex, toIndex) {
    // TODO: Complete the function
+   let $listItems = $("li");
+   let itemCount = $listItems.length;
+   if (fromIndex < 0 || fromIndex >= itemCount || toIndex < 0 || toIndex >= itemCount) {
+      return;
+   }
+
+   // Detach the item at fromIndex
+   let $item = $listItems.eq(fromIndex).detach();
    
+   // Insert the item at toIndex
+   if (fromIndex < toIndex) {
+     $item.insertAfter($listItems.eq(toIndex));
+   } else {
+     $item.insertBefore($listItems.eq(toIndex));
+   }
 }
 
 function removeItem(index) {
    // TODO: Complete the function
-   
+   $("ol li").eq(index).remove();  
 }
