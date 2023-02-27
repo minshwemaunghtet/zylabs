@@ -9,6 +9,20 @@ $(function () {
 
 function fetchQuotes(topic, count) {
    // TODO: Modify to use $.get() or $.ajax()
+   const url = `https://wp.zybooks.com/quotes.php?topic=${topic}&count=${count}`;
+   
+      $.get(url, function(response) {
+         let html = "<ol>";
+         if(response.error) {
+            html += response.error;
+         } else {
+            response.forEach(function(quoteObj) {
+               html += `<li>${quoteObj.quote} - ${quoteObj.source}</li>`;
+            });
+         }
+         html += "</ol>";
+         $("#quotes").html(html);
+      }, "json");
 
    let html = "<ol>";
    for (let c = 0; c < count; c++) {
