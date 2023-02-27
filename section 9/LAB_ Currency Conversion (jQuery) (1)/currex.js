@@ -187,4 +187,117 @@ var exchangeRates = {
   }
 };
 
-/* Your solution goes here */
+// Perform conversion
+function convertCurrency() {   
+   var usDollars = parseFloat($("#usdInput").val());
+   var selectedOption = $("#toCurrency option:selected").val();
+
+   $("#resultLabel").text(allCurrencies[selectedOption] + ' (' + selectedOption + '):');
+
+   // Perform conversion
+   var convRate = exchangeRates.rates[selectedOption];
+   var result = usDollars * convRate;
+    
+   $("#resultCurrency").val(result.toFixed(2));
+}
+
+// Update currency dropdown list to only list currency in the exchange rate object
+function updateCurrencyDropdown() {
+   var selectHTML = '<option value="" disabled selected>Select currency</option>\n';   
+   
+   for (var currencyAbbrev in exchangeRates.rates) {
+      selectHTML += '<option value="' + currencyAbbrev + '">' + allCurrencies[currencyAbbrev] + ' (' + currencyAbbrev + ')</option>\n';
+   }
+
+   $("#toCurrency").html(selectHTML);
+}
+
+// Update rates, dropdown list, and conversion
+function updateRates() {
+   var exchangeRatesJSON = $("#exchangeRates").val();
+   
+   // Update exchange rate object
+   exchangeRates = JSON.parse(exchangeRatesJSON);
+   
+   // Update currency dropdown
+   updateCurrencyDropdown();   
+   
+   // Reset label and value for converted currency
+   $("#resultLabel").text("To Currency ():");
+   $("#resultCurrency").val("---.--");
+}
+
+$(function() {
+   updateCurrencyDropdown();    
+   $("#toCurrency").change(convertCurrency);
+   $("#updateRates").click(updateRates);
+});
+
+// Initial data for exchange rates
+var exchangeRates = {
+  "disclaimer": "Usage subject to terms: https://openexchangerates.org/terms",
+  "license": "https://openexchangerates.org/license",
+  "timestamp": 1534107604,
+  "base": "USD",
+  "rates": {
+    "BTC": 0.000157753542,
+    "CAD": 1.316853,
+    "EUR": 0.879353,
+    "JPY": 110.46550427,
+    "USD": 1,
+  }
+};
+
+// update options in select dropdown
+$('#toCurrency').append('<option value="" disabled selected>Select currency</option>');
+for (var currency in exchangeRates.rates) {
+  if (allCurrencies[currency]) {
+    var currencyOption = '<option value="' + currency + '">' + allCurrencies[currency] + ' (' + currency + ')' + '</option>';
+    $('#toCurrency').append(currencyOption);
+  }
+}
+
+// change listener for select dropdown
+$('#toCurrency').change(function() {
+  var selectedCurrency = $(this).val();
+  if (selectedCurrency) {
+    var usdAmount = $('#usdAmount').val();
+    var exchangeRate = exchangeRates.rates[selectedCurrency];
+    var convertedAmount = parseFloat(usdAmount) * exchangeRate;
+    $('#resultCurrency').val(convertedAmount.toFixed(2));
+    var selectedCurrencyName = allCurrencies[selectedCurrency];
+    $('#resultCurrencyLabel').text(selectedCurrencyName + ' (' + selectedCurrency + '):');
+  }
+});
+
+var toCurrencySelect = $('#toCurrency');
+var resultCurrencyInput = $('#resultCurrency');
+var resultCurrencyLabel = $('label[for="resultCurrency"]');
+
+// Get the update button and exchange rates textarea
+var updateButton = $('#updateButton');
+var exchangeRatesTextarea = $('#exchangeRates');
+
+// Add a click listener to the update button
+updateButton.on('click', function() {
+  // Update the exchangeRates object using the JSON string in the textarea
+  var updatedRates = JSON.parse(exchangeRatesTextarea.val());
+  exchangeRates.rates = updatedRates.rates;
+
+  // Update the select dropdown
+  toCurrencySelect.empty();
+  toCurrencySelect.append('<option value="" disabled selected>Select currency</option>');
+  for (var currency in exchangeRates.rates) {
+    var currencyName = allCurrencies[currency];
+    var optionText = currencyName + ' (' + currency + ')';
+    var option = $('<option>', {value: currency, text: optionText});
+    toCurrencySelect.append(option);
+  }
+
+  // Reset the result currency input and label
+  resultCurrencyInput.val('');
+  resultCurrencyLabel.text('---.--');
+
+  // Display a success message
+  alert('Exchange rates updated!');
+});
