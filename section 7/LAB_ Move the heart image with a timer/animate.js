@@ -7,6 +7,7 @@ window.addEventListener("DOMContentLoaded", function() {
 function startAnimation(e) {
 
    // Get mouse coordinates
+   clearInterval(timerId);
    let clickX = e.clientX;
    let clickY = e.clientY;  
    
@@ -27,23 +28,27 @@ function moveImage(x, y) {
    const centerY = Math.round(y - (img.height / 2));
 
    // TODO: Add code here
-   
-   
-   // Move 1 pixel in both directions toward the click
-   if (imgX < centerX) {
-      imgX++;
-   }
-   else if (imgX > centerX) {
-      imgX--;
-   }
-   
-   if (imgY < centerY) {
-      imgY++;
-   }
-   else if (imgY > centerY) {
-      imgY--;
-   }
-   
-   img.style.left = imgX + "px";
-   img.style.top = imgY + "px";
+   timerId = setInterval(function () {
+      // Moving the image in the x direction.
+      if (imgX < centerX) {
+         imgX++;
+      } else if (imgX > centerX) {
+         imgX--;
+      }
+      
+      // Moving the image in the y direction.
+      if (imgY < centerY) {
+         imgY++;
+      } else if (imgY > centerY) {
+         imgY--;
+      }
+
+      // Set the new position of the image using CSS
+      img.style.left = imgX + "px";
+      img.style.top = imgY + "px";
+      // Stop the timer when the image has reached the target position.
+      if (imgX === centerX && imgY === centerY) {
+         clearInterval(timerId);
+      }
+  }, 10);
 }
