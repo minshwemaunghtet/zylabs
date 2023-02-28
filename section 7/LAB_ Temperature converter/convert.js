@@ -15,7 +15,7 @@ function domLoaded() {
       if (cInput.value !== "") {
          var tempC = parseFloat(cInput.value);
          if (isNaN(tempC) && cInput.value.search(" C") != -1) { 
-         var tempC2 = parseFloat(tempC);
+            var tempC2 = parseFloat(tempC);
          if (isNaN(tempC2)) {
             errorMessage.innerText = cInput.value + " is not a number";
             errorMessage.style.color = "red";
@@ -25,17 +25,18 @@ function domLoaded() {
           
          var arr = [];
          if (cInput.value.search(" ") != -1) {
-         arr.split(" ");
-         var tempF = convertCtoF(arr[0]);
-         fInput.value = tempF; 
+            arr.split(" ");
+            var tempF = convertCtoF(arr[0]);
+            fInput.value = tempF; 
          }
+
          else {
-         var tempF = convertCtoF(tempC);
-         fInput.value = tempF; 
+            var tempF = convertCtoF(tempC);
+            fInput.value = tempF; 
          }
          
          if (tempF > 50) { 
-         weatherImage.src = "warm.png"; 
+            weatherImage.src = "warm.png"; 
          } else if (tempF >= 32 && tempF <= 50) { 
             weatherImage.src = "cool.png";
          } else { 
@@ -57,11 +58,11 @@ function domLoaded() {
          cInput.value = tempC; 
 
          if (tempF > 50) { 
-         weatherImage.src = "warm.png"; 
+            weatherImage.src = "warm.png"; 
          } else if (tempF >= 32 && tempF <= 50) {
-         weatherImage.src = "cool.png";
+            weatherImage.src = "cool.png";
          } else {
-         weatherImage.src = "cold.png";
+            weatherImage.src = "cold.png";
          }
       }
    })
