@@ -1,77 +1,77 @@
 function checkForm() {
-   const form = document.querySelector('form');
-   const fullNameInput = document.getElementById('fullName');
-   const emailInput = document.getElementById('email');
-   const passwordInput = document.getElementById('password');
-   const passwordConfirmInput = document.getElementById('passwordConfirm');
-   const formErrors = document.getElementById('formErrors');
-   formErrors.innerHTML = '';
-   let hasErrors = false;
- 
-   // Validate full name
-   if (fullNameInput.value.trim().length < 1) {
-     const error = document.createElement('li');
-     error.textContent = 'Missing full name.';
-     formErrors.appendChild(error);
-     fullNameInput.classList.add('error');
-     hasErrors = true;
-   } else {
-     fullNameInput.classList.remove('error');
-   }
- 
-   // Validate email
-   const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,5}$/;
-   if (!emailRegex.test(emailInput.value.trim())) {
-     const error = document.createElement('li');
-     error.textContent = 'Invalid or missing email address.';
-     formErrors.appendChild(error);
-     emailInput.classList.add('error');
-     hasErrors = true;
-   } else {
-     emailInput.classList.remove('error');
-   }
- 
-   // Validate password
-   const password = passwordInput.value.trim();
-   if (password.length < 10 || password.length > 20) {
-     const error = document.createElement('li');
-     error.textContent = 'Password must be between 10 and 20 characters.';
-     formErrors.appendChild(error);
-     passwordInput.classList.add('error');
-     hasErrors = true;
-   } else if (!/[a-z]/.test(password) || !/\d/.test(password)) {
-     const error = document.createElement('li');
-     error.textContent = 'No lowercase or digit.';
-     formErrors.appendChild(error);
-     passwordInput.classList.add('error');
-     hasErrors = true;
-   } else {
-     passwordInput.classList.remove('error');
-   }
- 
-   // Validate password confirmation
-   if (passwordConfirmInput.value.trim().length < 1) {
-     const error = document.createElement('li');
-     error.textContent = 'Missing password confirmation.';
-     formErrors.appendChild(error);
-     passwordConfirmInput.classList.add('error');
-     hasErrors = true;
-   } else if (passwordInput.value !== passwordConfirmInput.value) {
-     const error = document.createElement('li');
-     error.textContent = "Password and confirmation password don't match.";
-     formErrors.appendChild(error);
-     passwordConfirmInput.classList.add('error');
-     hasErrors = true;
-   } else {
-     passwordConfirmInput.classList.remove('error');
-   }
- 
-   if (hasErrors) {
-     formErrors.classList.remove('hide');
-   } else {
-     formErrors.classList.add('hide');
-   }
- }
+  const fullNameInput = document.getElementById('fullName');
+  const emailInput = document.getElementById('email');
+  const passwordInput = document.getElementById('password');
+  const passwordConfirmInput = document.getElementById('passwordConfirm');
+  const formErrorsDiv = document.getElementById('formErrors');
+  
+  let fullName = fullNameInput.value.trim();
+  let email = emailInput.value.trim();
+  let password = passwordInput.value.trim();
+  let passwordConfirm = passwordConfirmInput.value.trim();
+  let errors = [];
+
+  if (fullName.length < 1) {
+    errors.push('Missing full name.');
+    fullNameInput.classList.add('error');
+  } else {
+    fullNameInput.classList.remove('error');
+  }
+
+  const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,5}$/;
+  if (!emailRegex.test(email)) {
+    errors.push('Invalid or missing email address.');
+    emailInput.classList.add('error');
+  } else {
+    emailInput.classList.remove('error');
+  }
+
+  const lowercaseRegex = /[a-z]/;
+  if (password.length < 10 || password.length > 20) {
+    errors.push('Password must be between 10 and 20 characters.');      
+    passwordInput.classList.add('error');
+  } 
+
+  if (!lowercaseRegex.test(password)) {
+    errors.push('Password must contain at least one lowercase character.');
+    passwordInput.classList.add('error');
+  } 
+
+  const uppercaseRegex = /[A-Z]/;
+  if (!uppercaseRegex.test(password)) {
+    errors.push('Password must contain at least one uppercase character.');
+    passwordInput.classList.add('error');
+  } 
+
+  const digitRegex = /[0-9]/;
+  if (!digitRegex.test(password)) {
+    errors.push('Password must contain at least one digit.');
+    passwordInput.classList.add('error');
+  } 
+
+  if (password !== passwordConfirm) {
+    errors.push('Password and confirmation password don\'t match.');
+    passwordConfirmInput.classList.add('error');
+  } else {
+    passwordConfirmInput.classList.remove('error');
+  }
+  
+  if (errors.length > 0) {
+    formErrorsDiv.innerHTML = '';
+    const errorList = document.createElement('ul');
+    errors.forEach(error => {
+        const errorListItem = document.createElement('li');
+        errorListItem.textContent = error;
+        errorList.appendChild(errorListItem);
+      });
+    formErrorsDiv.appendChild(errorList);
+    formErrorsDiv.classList.remove('hide');
+  } 
+
+  else {
+    formErrorsDiv.classList.add('hide');
+  }
+}
 
 document.getElementById("submit").addEventListener("click", function(event) {
    checkForm();
