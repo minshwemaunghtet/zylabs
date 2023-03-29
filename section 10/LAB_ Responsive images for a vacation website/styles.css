@@ -28,3 +28,11 @@ header > h1 {
 }
 
 /* TODO: Add ul rule to show check.svg in background */
+ul {
+   list-style-type: none;
+   background-image: url(check.svg);
+   background-repeat: no-repeat;
+   background-position: center;
+   background-size: 60vw;
+}
+ 
